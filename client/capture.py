@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# 2017/2/6 dou
+# 创建于 2017/2/6 dou
+
 # 此对象继承wx.Panel
 # 整合接收cvFrame与client端的显示
 # 独占Tcp通讯端口
