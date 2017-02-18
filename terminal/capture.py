@@ -21,6 +21,7 @@ class Capture(Tcp):
         self.captureInterval = captureInterval
 
 
+
     # 获取图像，并且编码
     # return要传输的字符串编码
     def createImg(self):
@@ -49,7 +50,7 @@ class Capture(Tcp):
                 time.sleep(self.captureInterval)
  
 # example
-cap = Capture(1) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
+cap = Capture(0) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
 while not cap.connectServer('192.168.10.234', 8001): time.sleep(1) # (server_ip, port)
 cap.sendImg()
 
