@@ -9,22 +9,22 @@ import wx
 import socket
 import cv2
 import numpy
+from tcp import Tcp
 
-class CapturePanel(wx.Panel):
+class CapturePanel(wx.Panel, Tcp):
 
     # parent为父容器
     #  fps为本窗口刷新频率
     # fps为窗口时钟设置间隔，触发nextFrame()
     def __init__(self, parent, fps=30):
+        Tcp.__init__(self, "capture:")
         wx.Panel.__init__(self, parent)
         parent.SetSize((640, 480))
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.fps = fps
         self.timer = wx.Timer(self)
         self.timer.Start(1000. / self.fps)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_TIMER, self.NextFrame)
-        self.isConnect = False
 
 
     # ？？
@@ -54,48 +54,26 @@ class CapturePanel(wx.Panel):
         return frame
 
 
-    # 接收数据
-    def recvall(self, count):
-        buf = b''
-        while count:
-            newbuf = self.socket.recv(count)
-            if not newbuf: return None
-            buf += newbuf
-            count -= len(newbuf)
-        return buf
-
 
     # address，port分别为服务器tcp链接的ip与端口
     # 当链接失败，返回false
     # 当链接成功，返回true，并设置视频尺寸（与图像规格有关）
     def connectServer(self, address, port):
-        self.address, self.port = address, port
-
-        try:
-            self.socket.connect((self.address, self.port))
-        except BaseException:
-            print 'client connect server fail!'
-            return False
-        else:
-            print 'client conncet server successfully!!'
-            self.isConnect = True
+        if Tcp.connectServer(self, address, port):
             self.frame = self.recvFrame()
             height, width = self.frame.shape[:2]
             self.bmp = wx.BitmapFromBuffer(width, height, self.frame)
             return True
+        else:
+            return False
 
-
-    # 断开服务器连接
-    def disconnectServer(self):
-        if self.isConnect:
-            self.socket.close()
 
 
 # example
 app = wx.App()
 frame = wx.Frame(None)
 cap = CapturePanel(frame, 30)  # (parent, fps=30)
-while not cap.connectServer('127.0.0.1', 8002): # (server_ip, port)
+while not cap.connectServer('192.168.10.234', 8002): # (server_ip, port)
     pass
 frame.Show()
 app.MainLoop()
