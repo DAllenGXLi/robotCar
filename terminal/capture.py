@@ -26,7 +26,9 @@ class Capture:
     # 链接服务器
     # 链接成功返回true，失败返回true，同时设置isConnect属性
     def connectServer(self, address, PORT):
+
         self.address, self.PORT = address, PORT
+
         try:
             self.socket.connect((self.address, self.PORT))
         except BaseException:
@@ -37,6 +39,7 @@ class Capture:
             self.isConnect = True
             print "terminal socket.connect succeed!"
             return True
+
 
     # 断开服务器连接
     def disConnectServer(self):
@@ -61,6 +64,7 @@ class Capture:
             print "capture.read error!"
             return False
 
+
     # 使用while循环传输图像
     def sendImg(self):
         while True:
@@ -69,8 +73,16 @@ class Capture:
                 self.socket.sendall(str(len(stringData)).ljust(16))
                 self.socket.sendall(stringData)
                 time.sleep(self.captureInterval)
-
+ 
 # example
-cap = Capture(1) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
-while not cap.connectServer('127.0.0.1', 8001): pass # (server_ip, port)
+cap = Capture(0) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
+while not cap.connectServer('192.168.10.234', 8001): time.sleep(1) # (server_ip, port)
 cap.sendImg()
+
+
+
+
+
+
+
+
