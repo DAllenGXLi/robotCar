@@ -73,7 +73,7 @@ class CapturePanel(wx.Panel, Tcp):
 app = wx.App()
 frame = wx.Frame(None)
 cap = CapturePanel(frame, 30)  # (parent, fps=30)
-while not cap.connectServer('192.168.10.234', 8002): # (server_ip, port)
+while not cap.connectServer('127.0.0.1', 8002): # (server_ip, port)
     pass
 frame.Show()
 app.MainLoop()

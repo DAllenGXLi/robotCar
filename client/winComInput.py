@@ -3,24 +3,42 @@
 
 import pythoncom
 import pyHook
+from tcp import Tcp
+import time
 
 # 此类从windows中通过监听鼠标键盘获取控制信息
 # 其中包括信息的技工处理，最终输出规范的控制协议格式
 # str(len(stringData)).ljust(16)
-class winComInput:
+class winComInput(Tcp):
 
     def __init__(self, width, height):
+        Tcp.__init__(self, "command:")
         self.width, self.height = width, height
         self.hm = pyHook.HookManager()
         self.hm.KeyDown = self.onKeyboardEvent
         self.hm.MouseAll = self.onMouseEvent
+        self.time = time.time()
 
 
+    def trrigerMouseEvent(self, interval):
+        if time.time()-self.time < interval:
+            return False
+        else:
+            self.time = time.time()
+            return True
 
 
     def onMouseEvent(self, event):
         x, y = event.Position;
-        print self.analyseMouseData(x, y)
+        left_moto, right_moto = self.analyseMouseData(x, y)
+        if self.trrigerMouseEvent(0.2):
+            lcommand = self.formatData(left_moto, "110")
+            rcommand = self.formatData(right_moto, "120")
+            try:
+                self.sendall(lcommand)
+                self.sendall(rcommand)
+            except BaseException:
+                print "ERROR: command sending failed!"
         return True
 
 
@@ -56,18 +74,15 @@ class winComInput:
         left_moto_output += 255
         right_moto_output += 255
 
-        lcommand = self.formatData(left_moto_output)
-        rcommand = self.formatData(right_moto_output)
-
-        return (lcommand, rcommand)
+        return (left_moto_output, right_moto_output)
 
 
 
 
     # 此函数返回符合协议的控制信号元组，分别为左右moto输出
-    def formatData(self, moto_output):
+    def formatData(self, moto_output, id):
         # 格式化输出
-        command = "*110"
+        command = "*"+id
         data_4 = int(moto_output / 100)
         data_5 = int(moto_output / 10) - data_4 * 10
         data_6 = int(moto_output) - data_4 * 100 - data_5 * 10
@@ -80,6 +95,7 @@ class winComInput:
 
 
     def run(self):
+        time.sleep(0.5)
         self.hm.HookMouse()
         self.hm.HookKeyboard()
         pythoncom.PumpMessages()
@@ -87,5 +103,7 @@ class winComInput:
 
 
 
-col = winComInput(1920, 1080)
-col.run()
+com = winComInput(1920, 1080)
+while not com.connectServer('127.0.0.1', 8003): # (server_ip, port)
+    time.sleep(1)
+com.run()

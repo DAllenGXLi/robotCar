@@ -50,8 +50,8 @@ class Capture(Tcp):
                 time.sleep(self.captureInterval)
  
 # example
-cap = Capture(0) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
-while not cap.connectServer('192.168.10.234', 8001): time.sleep(1) # (server_ip, port)
+cap = Capture(1) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
+while not cap.connectServer('127.0.0.1', 8001): time.sleep(1) # (server_ip, port)
 cap.sendImg()
 
 
