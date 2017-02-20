@@ -9,6 +9,7 @@ class Tcp:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.isConnect = False
         self.processName = process_name
+        self.address, self.port = None, None
 
 
     # 接收数据
@@ -47,5 +48,6 @@ class Tcp:
 
     # 断开服务器连接
     def disconnectServer(self):
-        if self.isConnect:
-            self.socket.close()
+        self.socket.close()
+        self.socket = None
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

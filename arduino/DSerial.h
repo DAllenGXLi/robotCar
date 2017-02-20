@@ -22,6 +22,7 @@ class DSerial
     void resetCommand();
   public:
     DSerial(int buadrate=9600);
+    void setBuadRate(int buadrate=9600);
     bool getCommand();
     int getCommandId();
     int getCommandData();
@@ -30,13 +31,17 @@ class DSerial
 
 
 
-
 DSerial::DSerial(int buadrate)
 {
-  Serial.begin(buadrate);
   this->resetCommand();
   }
 
+
+
+void DSerial::setBuadRate(int buadrate)
+{
+  Serial.begin(buadrate);
+  }
 
 
 void DSerial::resetCommand()

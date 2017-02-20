@@ -14,16 +14,18 @@ class command(Tcp):
         self.isConnectToArduino = False
 
 
-    def connectToArduino(self, port, baud_rate = 9600, timeout=1):
+    def connectToArduino(self, port, baud_rate = 9600, timeout=0.1):
         try:
             self.ser = serial.Serial(port, baud_rate, timeout = timeout)
         except BaseException:
             print "ERROR: terminal connect to Arduino failed!"
+            return False
         else:
             self.isConnectToArduino = True
             # 注意，这个时间非常重要，链接arduino后不能立刻收发数据
             time.sleep(2)
             print "terminal connect to Arduino successfully!"
+            return True
 
 
 
@@ -39,13 +41,17 @@ class command(Tcp):
                 command = self.recvall(8)
             except BaseException:
                 print "ERROR: recive command failed!"
+                self.disconnectServer()
+                while not self.connectServer(self.address, self.port):
+                    time.sleep(1)
             else:
                 self.sendToArduino(command)
 
 
 
 com = command()
-com.connectToArduino('COM3')
+while not com.connectToArduino('COM3'):
+    time.sleep(1)
 while not com.connectServer('127.0.0.1', 8004):
     time.sleep(1)
 com.run()

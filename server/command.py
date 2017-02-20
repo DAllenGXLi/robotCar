@@ -19,15 +19,16 @@ class Command(Tcp):
             command = self.recvall(self.clientConn, 8)
 
             if not command:
-                self.waitForTerminal()
+                self.waitForClient()
                 continue
 
             try:
-                self.terminalConn.sendall(command)
+                self.terminalConn.sendall("")
             except BaseException:
                 print "ERROR: server.terminalConn.sendall(command) failed!"
                 self.waitForTerminal()
                 continue
+            self.terminalConn.sendall(command)
             time.sleep(0.001)
 
 

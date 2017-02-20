@@ -45,9 +45,14 @@ class Capture(Tcp):
         while True:
             stringData = self.createImg()
             if stringData:
-                self.sendall(str(len(stringData)).ljust(16))
-                self.sendall(stringData)
-                time.sleep(self.captureInterval)
+                try:
+                    self.sendall(str(len(stringData)).ljust(16))
+                    self.sendall(stringData)
+                    time.sleep(self.captureInterval)
+                except BaseException:
+                    print self.processName, "send img failed!"
+                    self.disconnectServer()
+                    while not cap.connectServer(self.address, self.port): time.sleep(1)  # (server_ip, port)
  
 # example
 cap = Capture(1) # (CAMERA=0, IMG_QUILITY=80, captureInterval=0.01)
