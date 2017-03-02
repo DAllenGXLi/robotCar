@@ -33,7 +33,7 @@ class Command(Tcp):
 
 
 
-com = Command('127.0.0.1')
+com = Command('192.168.10.111')
 com.creatClientServer(8003)
 com.createTermialServer(8004)
 com.runServer()

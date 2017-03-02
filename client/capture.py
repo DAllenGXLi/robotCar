@@ -19,7 +19,7 @@ class CapturePanel(wx.Panel, Tcp):
     def __init__(self, parent, fps=30):
         Tcp.__init__(self, "capture:")
         wx.Panel.__init__(self, parent)
-        parent.SetSize((640, 480))
+        # parent.SetSize((640, 480))
         self.fps = fps
         self.timer = wx.Timer(self)
         self.timer.Start(1000. / self.fps)
@@ -73,7 +73,7 @@ class CapturePanel(wx.Panel, Tcp):
 app = wx.App()
 frame = wx.Frame(None)
 cap = CapturePanel(frame, 30)  # (parent, fps=30)
-while not cap.connectServer('127.0.0.1', 8002): # (server_ip, port)
+while not cap.connectServer('180.76.163.52', 8002): # (server_ip, port)
     pass
 frame.Show()
 app.MainLoop()

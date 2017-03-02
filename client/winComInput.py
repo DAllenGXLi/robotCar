@@ -18,6 +18,8 @@ class winComInput(Tcp):
         self.hm.KeyDown = self.onKeyboardEvent
         self.hm.MouseAll = self.onMouseEvent
         self.time = time.time()
+        self.holder_1 = 90
+        self.holder_2 = 90
 
 
     def trrigerMouseEvent(self, interval):
@@ -44,7 +46,32 @@ class winComInput(Tcp):
 
 
     def onKeyboardEvent(self, event):
-        pass
+        # left
+        # if event.KeyID == 39:
+        #     if not self.holder_1 <= 3:
+        #         self.holder_1 -= 3
+        #     self.sendall(self.formatData(self.holder_1, "210"))
+
+
+        # right
+        # elif event.KeyID == 37:
+        #     if not self.holder_1 >= 177:
+        #         self.holder_1 += 3
+        #     self.sendall(self.formatData(self.holder_1, "210"))
+
+        # up
+        # elif event.KeyID == 38:
+        #     if not self.holder_2 >= 177:
+        #         self.holder_2 += 3
+        #     self.sendall(self.formatData(self.holder_2, "220"))
+        #     print self.formatData(self.holder_2, "220")
+
+        # down
+        # elif event.KeyID == 40:
+        #     if not self.holder_2 <= 3:
+        #         self.holder_2 -= 3
+        #     self.sendall(self.formatData(self.holder_2, "220"))
+
         return True
 
 
@@ -71,6 +98,11 @@ class winComInput(Tcp):
                 left_moto_output = dy
                 right_moto_output = left_moto_output+dx
 
+        if left_moto_output<80 and left_moto_output>-80:
+            left_moto_output = 0
+        if right_moto_output<80 and right_moto_output>-80:
+            right_moto_output = 0
+
         left_moto_output += 255
         right_moto_output += 255
 
@@ -79,7 +111,7 @@ class winComInput(Tcp):
 
 
 
-    # 此函数返回符合协议的控制信号元组，分别为左右moto输出
+    # 此函数返回符合协议的控制信号，分别为左右moto输出
     def formatData(self, moto_output, id):
         # 格式化输出
         command = "*"+id
@@ -104,6 +136,6 @@ class winComInput(Tcp):
 
 
 com = winComInput(1920, 1080)
-while not com.connectServer('127.0.0.1', 8003): # (server_ip, port)
+while not com.connectServer('180.76.163.52', 8003): # (server_ip, port)
     time.sleep(1)
 com.run()

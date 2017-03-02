@@ -48,16 +48,21 @@ void DMoto::l_moto_run(int data)
 {
   if (data>=255)
   {
-    Serial.println(data-255);
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    analogWrite(ENA, data-255);
+//    Serial.println(ENA);
+//    Serial.println(": ");
+//    Serial.println(data-255);
+    digitalWrite(this->IN1, HIGH);
+    digitalWrite(this->IN2, LOW);
+    analogWrite(this->ENA, data-255);
     }
   if (data<255)
   {
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
-    analogWrite(ENA, 255-data);
+//    Serial.println(ENB);
+//    Serial.println(": ");
+//    Serial.println(255-data);
+    digitalWrite(this->IN1, LOW);
+    digitalWrite(this->IN2, HIGH);
+    analogWrite(this->ENA, 255-data);
     }
   }
 
@@ -65,15 +70,15 @@ void DMoto::r_moto_run(int data)
 {
   if (data>=255)
   {
-    digitalWrite(IN3, HIGH);
-    digitalWrite(IN4, LOW);
-    analogWrite(ENB, data-255);
+    digitalWrite(this->IN3, HIGH);
+    digitalWrite(this->IN4, LOW);
+    analogWrite(this->ENB, data-255);
     }
   if (data<255)
   {
-    digitalWrite(IN3, LOW);
-    digitalWrite(IN4, HIGH);
-    analogWrite(ENB, 255-data);
+    digitalWrite(this->IN3, LOW);
+    digitalWrite(this->IN4, HIGH);
+    analogWrite(this->ENB, 255-data);
     }
   }
 

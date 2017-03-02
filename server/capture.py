@@ -59,7 +59,7 @@ class Capture(Tcp):
 
 
 # example
-cap = Capture('127.0.0.1') # (ip)
+cap = Capture('192.168.10.111') # (ip)
 cap.createTermialServer(8001) # (terminal_port)
 cap.creatClientServer(8002) # (client_port)
 cap.runServer()
