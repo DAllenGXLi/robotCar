@@ -25,6 +25,7 @@ class Command(Tcp):
             try:
                 self.terminalConn.sendall("")
             except BaseException:
+                self.all_info("ERROR: server.terminalConn.sendall(command) failed!")
                 print "ERROR: server.terminalConn.sendall(command) failed!"
                 self.waitForTerminal()
                 continue

@@ -3,6 +3,7 @@
 
 import socket
 import time
+import common.info as info
 
 # 此类用于做tcp服务器中转数据类的基类
 # 继承此类，只需 tcp.__init__(self, address, process_name="")
@@ -11,7 +12,7 @@ import time
 # 然后使用 recvall(conn, count)接受数据，conn = self.clientConn/TerminalConn
 # 使用 self.clientConn/TerminalConn.sendall(str) 发送数据
 
-class Tcp:
+class Tcp(info.Info):
     # 只需绑定本机ip
     def __init__(self, address, process_name = ''):
         self.clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

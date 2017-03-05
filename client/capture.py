@@ -11,6 +11,7 @@ import cv2
 import numpy
 from tcp import Tcp
 
+
 class CapturePanel(wx.Panel, Tcp):
 
     # parent为父容器
@@ -45,6 +46,7 @@ class CapturePanel(wx.Panel, Tcp):
         length = self.recvall(16)
         while not length:
             length = self.recvall(16)
+            self.all_info.append("can not get data's length!")
             print "can not get data's length!"
             return False
         stringData = self.recvall(int(length))

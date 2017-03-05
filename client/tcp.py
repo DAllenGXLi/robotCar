@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # 创建于 2017/2/18 dou
 import socket
+import common.info as info
 
 # 此类用于终端tcp链接服务器，作为基类使用
-class Tcp:
+class Tcp(info.Info):
 
     def __init__(self, process_name = ''):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,9 +34,11 @@ class Tcp:
         try:
             self.socket.connect((self.address, self.port))
         except BaseException:
+            self.all_info.append(self.processName+'client connect server fail!')
             print self.processName, 'client connect server fail!'
             return False
         else:
+            self.all_info.append(self.processName+'client conncet server successfully!!')
             print self.processName, 'client conncet server successfully!!'
             self.isConnect = True
             return True

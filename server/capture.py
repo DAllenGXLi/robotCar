@@ -34,6 +34,7 @@ class Capture(Tcp):
             self.clientConn.sendall(str(len(frame)).ljust(16))
             self.clientConn.sendall(frame)
         except BaseException:
+            self.all_info.append("server capture: client connect failed!")
             print "client connect failed!"
             return False
         else:
